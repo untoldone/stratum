@@ -1,0 +1,14 @@
+<div id="<%= dom_id document_page %>">
+  <p>
+    <strong>Index:</strong>
+    <%= document_page.index %>
+  </p>
+
+  <p>
+    <strong>Document:</strong>
+    <%= document_page.document_id %>
+  </p>
+
+  <%= image_tag url_for(document_page.preview) %>
+
+</div>

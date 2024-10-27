@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @document_page %>
+
+<div>
+  <%= link_to "Edit this document page", edit_document_page_path(@document_page) %> |
+  <%= link_to "Back to document pages", document_pages_path %>
+
+  <%= button_to "Destroy this document page", @document_page, method: :delete %>
+</div>

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Correspondences" %>
+
+<h1>Correspondences</h1>
+
+<div id="correspondences">
+  <% @correspondences.each do |correspondence| %>
+    <%= render correspondence %>
+    <p>
+      <%= link_to "Show this correspondence", correspondence %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New correspondence", new_correspondence_path %>

@@ -1,0 +1,11 @@
+<% content_for :title, "New correspondence" %>
+
+<h1>New correspondence</h1>
+
+<%= render "form", correspondence: @correspondence %>
+
+<br>
+
+<div>
+  <%= link_to "Back to correspondences", correspondences_path %>
+</div>

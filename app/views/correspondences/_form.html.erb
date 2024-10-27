@@ -1,0 +1,42 @@
+<%= form_with(model: correspondence) do |form| %>
+  <% if correspondence.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(correspondence.errors.count, "error") %> prohibited this correspondence from being saved:</h2>
+
+      <ul>
+        <% correspondence.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :subject, style: "display: block" %>
+    <%= form.text_field :subject %>
+  </div>
+
+  <div>
+    <%= form.label :sender, style: "display: block" %>
+    <%= form.text_field :sender %>
+  </div>
+
+  <div>
+    <%= form.label :recipient, style: "display: block" %>
+    <%= form.text_field :recipient %>
+  </div>
+
+  <div>
+    <%= form.label :sent_at, style: "display: block" %>
+    <%= form.datetime_field :sent_at %>
+  </div>
+
+  <div>
+    <%= form.label :document_id, style: "display: block" %>
+    <%= form.text_field :document_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

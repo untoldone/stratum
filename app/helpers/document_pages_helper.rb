@@ -1,0 +1,2 @@
+module DocumentPagesHelper
+end

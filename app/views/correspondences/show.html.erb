@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @correspondence %>
+
+<div>
+  <%= link_to "Edit this correspondence", edit_correspondence_path(@correspondence) %> |
+  <%= link_to "Back to correspondences", correspondences_path %>
+
+  <%= button_to "Destroy this correspondence", @correspondence, method: :delete %>
+</div>

@@ -1,0 +1,12 @@
+<% content_for :title, "Editing document page" %>
+
+<h1>Editing document page</h1>
+
+<%= render "form", document_page: @document_page %>
+
+<br>
+
+<div>
+  <%= link_to "Show this document page", @document_page %> |
+  <%= link_to "Back to document pages", document_pages_path %>
+</div>
