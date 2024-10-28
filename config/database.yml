@@ -79,7 +79,12 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: stratum_production
-  username: stratum
-  password: <%= ENV["STRATUM_DATABASE_PASSWORD"] %>
+  primary: &primary_production
+    <<: *default
+    database: stratum_production
+    username: stratum
+    password: <%= ENV["STRATUM_DATABASE_PASSWORD"] %>
+  queue:
+    <<: *primary_production
+    database: stratum_production_queue
+    migrations_paths: db/queue_migrate

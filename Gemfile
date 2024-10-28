@@ -57,3 +57,7 @@ group :test do
 end
 
 gem "rmagick"
+
+gem "solid_cache", "~> 1.0"
+
+gem "solid_queue", "~> 1.0"
