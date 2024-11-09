@@ -48,6 +48,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "dotenv"
 end
 
 group :test do
@@ -61,3 +62,5 @@ gem "rmagick"
 gem "solid_cache", "~> 1.0"
 
 gem "solid_queue", "~> 1.0"
+
+gem "ruby-openai"
