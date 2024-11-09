@@ -4,13 +4,15 @@
 
 <h1>Documents</h1>
 
-<div id="documents">
+
+<table id="documents">
+  <tr>
+    <th>Name</th>
+    <th>Created At</th>
+    <th></th>
   <% @documents.each do |document| %>
-    <%= render document %>
-    <p>
-      <%= link_to "Show this document", document %>
-    </p>
+    <%= render "row", document: document %>
   <% end %>
-</div>
+</table>
 
 <%= link_to "New document", new_document_path %>

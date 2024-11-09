@@ -61,6 +61,11 @@ class DocumentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_document
       @document = Document.find(params[:id])
+      if params[:page] && @document.pages.count >= params[:page].to_i
+        @page = params[:page].to_i
+      else
+        @page = 1
+      end
     end
 
     # Only allow a list of trusted parameters through.
