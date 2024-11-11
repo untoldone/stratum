@@ -1,0 +1,10 @@
+services:
+  collector:
+    build: .
+    environment:
+      - STRATUM_BASE_URL=${STRATUM_BASE_URL}
+      - SSH_ED25519_KEY=${SSH_ED25519_KEY}
+      - SSH_RSA_KEY=${SSH_RSA_KEY}
+      - AUTHORIZED_KEY=${AUTHORIZED_KEY}
+    ports:
+      - "2222:22"

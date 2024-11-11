@@ -6,6 +6,10 @@ class Document < ApplicationRecord
   before_save :set_original_file_id
   after_save :process_document
 
+  def best_file_available
+    processed_file.attached? ? processed_file : file
+  end
+
   private
   def set_original_file_id
     @original_file_id = file.attachment&.blob_id if file.attached?

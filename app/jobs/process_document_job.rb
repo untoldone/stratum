@@ -35,13 +35,22 @@ Before showing me a response:
 * Double check that the "sender" field is fewer than 20 characters
 * Double check the date being shown is the date the document was written
 
-All responses should be pure JSON only with no other context provided
+All responses should be pure JSON only with no other context provided. Only one object should be returned, never return an array of objects.
 EOS
 
   def perform(document)
     Dir.mktmpdir do |output_dir|
       document.file.open do |file|
-        pdf = Magick::ImageList.new(file.path) do |options|
+        # --rotate-pages-threshold 4 lowers the default confidence to rotating a pdf
+        # --output-type pdf outputs in pdf rather than pdf/a
+        # --rotate-pages attempts to rotate pages if oriented the wrong direction
+        # --deskew attempts to adjust for slight offsets from the document being scanned strait
+        # --force-ocr Always redo OCR even when text is present
+        ocrd_pdf_path = File.join(output_dir, "#{document.id}.pdf")
+        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages --deskew #{file.path} #{ocrd_pdf_path}`
+        document.update!(processed_file: File.open(ocrd_pdf_path))
+
+        pdf = Magick::ImageList.new(ocrd_pdf_path) do |options|
           options.density = '200'
         end
         pdf.each_with_index do |page, index|
@@ -52,14 +61,6 @@ EOS
 
           DocumentPage.create!(preview: File.open(page_image_path), document: document, index: index)
         end
-
-        # --rotate-pages-threshold 6 lowers the default confidence to rotating a pdf
-        # --output-type pdf outputs in pdf rather than pdf/a
-        # --rotate-pages attempts to rotate pages if oriented the wrong direction
-        # --deskew attempts to adjust for slight offsets from the document being scanned strait`
-        ocrd_pdf_path = File.join(output_dir, "#{document.id}.pdf")
-        `ocrmypdf --rotate-pages-threshold 6 --output-type pdf --rotate-pages --deskew #{file.path} #{ocrd_pdf_path}`
-        document.update!(processed_file: File.open(ocrd_pdf_path))
 
         pdf_text_path = File.join(output_dir, "#{document.id}.txt")
         # -layout tries to maintain the general layout of the PDF by using spaces etc. Otherwise, the text appears out of order if documents with complex relationships between data

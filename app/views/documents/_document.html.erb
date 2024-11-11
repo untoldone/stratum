@@ -1,5 +1,5 @@
 <div id="<%= dom_id document %>">
-  <%= image_tag url_for(document.pages[@page - 1].preview), width: "600" %>
+  <%= image_tag url_for(document.pages[@page - 1].preview), height: "600" %>
   <%= link_to "Prev", document_path(document, page: @page - 1) if @page > 1 %>
   <%= link_to "Next", document_path(document, page: @page + 1) if @page < document.pages.count %>
   <% if document.interpretation %>
@@ -26,6 +26,6 @@
   <% end %>
   <p>
     <strong>File:</strong>
-    <%= link_to "Download", url_for(document.file) %>
+    <%= link_to "Download", url_for(document.best_file_available) %>
   </p>
 </div>
