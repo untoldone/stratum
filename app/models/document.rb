@@ -1,4 +1,5 @@
 class Document < ApplicationRecord
+  belongs_to :account
   has_one_attached :file
   has_one_attached :processed_file
   has_one_attached :file_text

@@ -5,15 +5,17 @@ class DocumentsController < ApplicationController
 
   # GET /documents or /documents.json
   def index
-    @documents = Document.all
+    @documents = policy_scope(Document)
   end
 
   # GET /documents/1 or /documents/1.json
   def show
+    authorize @document
   end
 
   # GET /documents/new
   def new
+    authorize Document
     @document = Document.new
   end
 
@@ -23,6 +25,7 @@ class DocumentsController < ApplicationController
 
   # POST /documents or /documents.json
   def create
+    authorize Document
     @document = Document.new(document_params)
 
     respond_to do |format|
@@ -62,7 +65,7 @@ class DocumentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_document
-      @document = Document.find(params[:id])
+      @document = authorize Document.find(params[:id])
       if params[:page] && @document.pages.count >= params[:page].to_i
         @page = params[:page].to_i
       else

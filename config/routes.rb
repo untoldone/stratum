@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :document_pages
   resources :documents
   resources :correspondences

@@ -64,3 +64,7 @@ gem "solid_cache", "~> 1.0"
 gem "solid_queue", "~> 1.0"
 
 gem "ruby-openai"
+
+gem "devise", "~> 4.9"
+
+gem "pundit", "~> 2.4"
