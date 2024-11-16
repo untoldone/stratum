@@ -36,6 +36,8 @@ Before showing me a response:
 * Double check the date being shown is the date the document was written
 
 All responses should be pure JSON only with no other context provided. Only one object should be returned, never return an array of objects.
+
+Again, there should never be an Array of objects returned!
 EOS
 
   def perform(document)

@@ -13,6 +13,5 @@ class CreateAccounts < ActiveRecord::Migration[7.2]
 
     add_reference :documents, :account, type: :uuid
     add_reference :correspondences, :account, type: :uuid
-    add_reference :document_pages, :account, type: :uuid
   end
 end

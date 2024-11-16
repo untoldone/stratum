@@ -1,0 +1,16 @@
+<div id="<%= dom_id device %>">
+  <p>
+    <strong>Name:</strong>
+    <%= device.name %>
+  </p>
+
+  <p>
+    <strong>Tokens:</strong>
+    <ul>
+      <% device.tokens.each do |token| %>
+      <li><%= token.token %></li>
+      <% end %>
+    </ul>
+  </p>
+
+</div>

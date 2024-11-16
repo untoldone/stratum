@@ -1,0 +1,27 @@
+<%= form_with(model: device_token) do |form| %>
+  <% if device_token.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(device_token.errors.count, "error") %> prohibited this device_token from being saved:</h2>
+
+      <ul>
+        <% device_token.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :token, style: "display: block" %>
+    <%= form.text_field :token %>
+  </div>
+
+  <div>
+    <%= form.label :device_id, style: "display: block" %>
+    <%= form.text_field :device_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

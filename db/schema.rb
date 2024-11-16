@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_15_040821) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_16_215341) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_15_040821) do
     t.index ["document_id"], name: "index_correspondences_on_document_id"
   end
 
+  create_table "device_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "token"
+    t.uuid "device_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_device_tokens_on_device_id"
+  end
+
+  create_table "devices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_devices_on_account_id"
+  end
+
   create_table "document_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "index"
     t.uuid "document_id", null: false
@@ -102,5 +118,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_15_040821) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "correspondences", "documents"
+  add_foreign_key "device_tokens", "devices"
+  add_foreign_key "devices", "accounts"
   add_foreign_key "document_pages", "documents"
 end

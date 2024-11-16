@@ -11,6 +11,20 @@ class Document < ApplicationRecord
     processed_file.attached? ? processed_file : file
   end
 
+  def download_filename
+    if self.interpretation
+      ext = Mime::Type.lookup(self.best_file_available.content_type).symbol.to_s
+      date = self.interpretation["date_written"]
+      sender = self.interpretation["sender"]
+      recipient = self.interpretation["recipient"] || self.interpretation["recipient_guess"]
+      topic = self.interpretation["topic"]
+
+      "#{date}-#{sender}-#{recipient}-#{topic}.#{ext}"
+    else
+      self.file.filename
+    end
+  end
+
   private
   def set_original_file_id
     @original_file_id = file.attachment&.blob_id if file.attached?

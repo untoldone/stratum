@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @device_token %>
+
+<div>
+  <%= link_to "Edit this device token", edit_device_token_path(@device_token) %> |
+  <%= link_to "Back to device tokens", device_tokens_path %>
+
+  <%= button_to "Destroy this device token", @device_token, method: :delete %>
+</div>

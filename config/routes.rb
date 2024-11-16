@@ -1,9 +1,17 @@
 Rails.application.routes.draw do
+  resources :device_tokens
+  resources :devices
   devise_for :users
   resources :document_pages
-  resources :documents
+  resources :documents do
+    member do
+      get "download"
+    end
+  end
   resources :correspondences
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  post "api/v1/documents", to: "device_api#create_document"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

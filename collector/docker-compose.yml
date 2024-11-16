@@ -6,5 +6,6 @@ services:
       - SSH_ED25519_KEY=${SSH_ED25519_KEY}
       - SSH_RSA_KEY=${SSH_RSA_KEY}
       - AUTHORIZED_KEY=${AUTHORIZED_KEY}
+      - STRATUM_TOKEN=${STRATUM_TOKEN}
     ports:
       - "2222:22"

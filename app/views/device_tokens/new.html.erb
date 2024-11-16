@@ -1,0 +1,11 @@
+<% content_for :title, "New device token" %>
+
+<h1>New device token</h1>
+
+<%= render "form", device_token: @device_token %>
+
+<br>
+
+<div>
+  <%= link_to "Back to device tokens", device_tokens_path %>
+</div>

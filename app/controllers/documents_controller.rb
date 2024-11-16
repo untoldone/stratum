@@ -1,7 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[ show edit update destroy ]
-
-  skip_before_action :verify_authenticity_token, only: :create
+  before_action :set_document, only: %i[ show edit update destroy download ]
 
   # GET /documents or /documents.json
   def index
@@ -11,6 +9,14 @@ class DocumentsController < ApplicationController
   # GET /documents/1 or /documents/1.json
   def show
     authorize @document
+  end
+
+  # GET /documents/1/download
+  def download
+    send_data @document.best_file_available.download,
+              filename: @document.download_filename,
+              type: @document.best_file_available.content_type,
+              disposition: 'attachment'
   end
 
   # GET /documents/new
@@ -26,7 +32,7 @@ class DocumentsController < ApplicationController
   # POST /documents or /documents.json
   def create
     authorize Document
-    @document = Document.new(document_params)
+    @document = Document.new(document_params.merge(account: current_account))
 
     respond_to do |format|
       if @document.save

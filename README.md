@@ -40,5 +40,6 @@ In `./collector/keys` complete the following:
    5. Server Public key the key created on the server public key page
    6. Store directory `/input`
    7. Port number `2222`
+7. Bring up the development server via `./bin/dev`, go to `http://localhost:3000/devices` and create a new device. Save the resulting token to `./stratum_token`
 
 If this fails, it is useful to start the docker image locally (command in `Procfile.dev` and adding `-e DEBUG_MODE=true` to the collector service)

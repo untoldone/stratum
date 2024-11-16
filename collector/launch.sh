@@ -7,10 +7,10 @@ if [[ -z "${STRATUM_BASE_URL}" ]]; then
   exit 1
 fi
 
-#if [[ -z "${STRATUM_TOKEN}" ]]; then
-#  echo Environment variable STRATUM_TOKEN must be set >&2
-#  exit 1
-#fi
+if [[ -z "${STRATUM_TOKEN}" ]]; then
+  echo Environment variable STRATUM_TOKEN must be set >&2
+  exit 1
+fi
 
 if [[ -z "${AUTHORIZED_KEY}" ]]; then
   echo Environment variable AUTHORIZED_KEY must be set >&2
@@ -62,7 +62,7 @@ fi
 inotifywait -m /input -e close_write -e moved_to |
   while read path action file; do
     if [[ "$file" =~ .*pdf$ ]]; then # Does the file end with .pdf?
-      curl -XPOST -F 'document[file]=@/input/'"$file"'' $STRATUM_BASE_URL/documents
+      curl -XPOST -H 'Accept: application/json' -H 'Authorization: Bearer '"$STRATUM_TOKEN"'' -F 'document[file]=@/input/'"$file"'' $STRATUM_BASE_URL/api/v1/documents
     fi
 
     rm /input/$file
