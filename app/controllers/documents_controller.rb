@@ -15,8 +15,7 @@ class DocumentsController < ApplicationController
   def download
     send_data @document.best_file_available.download,
               filename: @document.download_filename,
-              type: @document.best_file_available.content_type,
-              disposition: 'attachment'
+              type: @document.best_file_available.content_type
   end
 
   # GET /documents/new

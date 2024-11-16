@@ -28,6 +28,6 @@
   <% end %>
   <p>
     <strong>File:</strong>
-    <%= link_to "Download", download_document_path(document) %>
+    <%= link_to "Download", download_document_path(document), data: {turbo: false} %>
   </p>
 </div>
