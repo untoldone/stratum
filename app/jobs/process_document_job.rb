@@ -80,10 +80,28 @@ EOS
           }
         )
 
-        puts api_response
+        to_fax_quality(document)
+
         response = api_response["choices"][0]["message"]["content"].sub(/^```json/,"").sub(/```$/,"")
-        puts response
         document.update(interpretation: JSON.parse(response))
+      end
+    end
+  end
+
+  def to_fax_quality(document)
+    Dir.mktmpdir do |output_dir|
+      document.processed_file.open do |file|
+        images_for_pdf_path = File.join(output_dir, "ready")
+        Dir.mkdir images_for_pdf_path
+        `pdftoppm -tiff -r 300 #{file.path} #{File.join(output_dir, "output")}`
+        pdf_file_list = []
+        Dir.glob(File.join(output_dir, "output*")).each_with_index do |input_image_path, index|
+          file_output_path = File.join(images_for_pdf_path, "#{index}.tif")
+          pdf_file_list << file_output_path
+          `magick -density 300 #{input_image_path} -threshold 75% -compress Group4 #{file_output_path}`
+        end
+        `magick #{pdf_file_list.join(" ")} #{File.join(output_dir, "output.pdf")}`
+        document.update!(fax_quality_file: File.open(File.join(output_dir, "output.pdf")))
       end
     end
   end

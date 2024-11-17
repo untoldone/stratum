@@ -2,6 +2,7 @@ class Document < ApplicationRecord
   belongs_to :account
   has_one_attached :file
   has_one_attached :processed_file
+  has_one_attached :fax_quality_file
   has_one_attached :file_text
   has_many :pages, class_name: 'DocumentPage', dependent: :delete_all
   before_save :set_original_file_id

@@ -58,6 +58,7 @@ group :test do
 end
 
 gem "rmagick"
+gem "mini_magick"
 
 gem "solid_cache", "~> 1.0"
 

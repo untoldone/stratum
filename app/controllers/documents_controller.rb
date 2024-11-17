@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[ show edit update destroy download ]
+  before_action :set_document, only: %i[ show edit update destroy download download_fax_quality ]
 
   # GET /documents or /documents.json
   def index
@@ -17,6 +17,13 @@ class DocumentsController < ApplicationController
               filename: @document.download_filename,
               type: @document.best_file_available.content_type
   end
+
+    # GET /documents/1/download
+    def download_fax_quality
+      send_data @document.fax_quality_file.download,
+                filename: @document.download_filename,
+                type: @document.fax_quality_file.content_type
+    end
 
   # GET /documents/new
   def new

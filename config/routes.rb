@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :documents do
     member do
       get "download"
+      get "download_fax_quality"
     end
   end
   resources :correspondences

@@ -8,6 +8,10 @@ class DocumentPolicy < ApplicationPolicy
     show?
   end
 
+  def download_fax_quality?
+    show?
+  end
+
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     # def resolve
