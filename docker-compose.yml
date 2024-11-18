@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  web:
+    image: "swarm-01.office.m:5000/stratum:latest"
+    networks:
+      - traefik_public
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_public"
+      - "traefik.http.routers.stratum.rule=Host(`stratum.gocodo.com`)"
+      - "traefik.http.routers.stratum.entrypoints=websecure"
+      - "traefik.http.routers.stratum.tls.certresolver=myresolver"
+    environment:
+      - AZURE_OPENAI_URI=https://md-assistant-openai.openai.azure.com/openai/deployments/gpt-4o-chat-deployment
+      - STRATUM_BACKBLAZE_KEYID=0011c63d09c9420000000000b
+      - REDIS_URL=redis://redis:6379/1
+    secrets:
+      - STRATUM_SECRET_KEY_BASE
+      - STRATUM_BACKBLAZE_APPKEY
+      - STRATUM_AZURE_OPENAI_API_KEY
+    entrypoint: [ '/bin/sh', '-c', 'export AZURE_OPENAI_API_KEY=$$(cat /var/run/secrets/STRATUM_AZURE_OPENAI_API_KEY)  ; export SECRET_KEY_BASE=$$(cat /var/run/secrets/STRATUM_SECRET_KEY_BASE) ; export STRATUM_BACKBLAZE_APPKEY=$$(cat /var/run/secrets/STRATUM_BACKBLAZE_APPKEY) ; ./bin/rails server' ]
+  worker:
+    image: "swarm-01.office.m:5000/stratum:latest"
+    networks:
+      - internal
+    environment:
+      - AZURE_OPENAI_URI=https://md-assistant-openai.openai.azure.com/openai/deployments/gpt-4o-chat-deployment
+      - STRATUM_BACKBLAZE_KEYID=0011c63d09c9420000000000b
+      - REDIS_URL=redis://redis:6379/1
+    secrets:
+      - STRATUM_SECRET_KEY_BASE
+      - STRATUM_BACKBLAZE_APPKEY
+      - STRATUM_AZURE_OPENAI_API_KEY
+    entrypoint: [ '/bin/sh', '-c', 'export AZURE_OPENAI_API_KEY=$$(cat /var/run/secrets/STRATUM_AZURE_OPENAI_API_KEY)  ; export SECRET_KEY_BASE=$$(cat /var/run/secrets/STRATUM_SECRET_KEY_BASE) ; export STRATUM_BACKBLAZE_APPKEY=$$(cat /var/run/secrets/STRATUM_BACKBLAZE_APPKEY) ; ./bin/jobs' ]
+  pg:
+    image: postgres:17.1
+    volumes:
+      - "/opt/gocodo/stratum/pgdata:/var/lib/postgresql/data"
+    networks:
+      - internal
+    environment:
+      POSTGRES_DB: stratum
+      POSTGRES_PASSWORD: notreallyasecret
+  redis:
+    image: redis:7.4.1
+    networks:
+      - internal
+
+secrets:
+  STRATUM_SECRET_KEY_BASE:
+    external: true
+  STRATUM_BACKBLAZE_APPKEY:
+    external: true
+  STRATUM_AZURE_OPENAI_API_KEY:
+    external: true
+
+networks:
+  traefik_public:
+    external: true
+  internal:
+    driver: overlay
+    ipam:
+      config:
+        - subnet: 172.16.50.0/24

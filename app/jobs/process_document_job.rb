@@ -1,4 +1,4 @@
-require "RMagick"
+require "RMagick2"
 
 class ProcessDocumentJob < ApplicationJob
   queue_as :default
@@ -98,9 +98,9 @@ EOS
         Dir.glob(File.join(output_dir, "output*")).each_with_index do |input_image_path, index|
           file_output_path = File.join(images_for_pdf_path, "#{index}.tif")
           pdf_file_list << file_output_path
-          `magick -density 300 #{input_image_path} -threshold 75% -compress Group4 #{file_output_path}`
+          `convert -density 300 #{input_image_path} -threshold 75% -compress Group4 #{file_output_path}`
         end
-        `magick #{pdf_file_list.join(" ")} #{File.join(output_dir, "output.pdf")}`
+        `convert #{pdf_file_list.join(" ")} #{File.join(output_dir, "output.pdf")}`
         document.update!(fax_quality_file: File.open(File.join(output_dir, "output.pdf")))
       end
     end

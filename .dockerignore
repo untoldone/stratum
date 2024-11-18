@@ -46,3 +46,9 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+# Project specific ignores
+/collector
+docker-compose.yml
+registry-docker-compose.yml
+Makefile

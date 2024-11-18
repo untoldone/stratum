@@ -69,3 +69,6 @@ gem "ruby-openai"
 gem "devise", "~> 4.9"
 
 gem "pundit", "~> 2.4"
+
+gem "aws-sdk-s3", require: false
+gem "mission_control-jobs"

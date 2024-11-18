@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  registry:
+    image: registry:2.8.3
+    volumes:
+      - "/opt/gocodo/stratum/registry/data:/data"
+    networks:
+      - traefik_public
+    ports:
+      - 5000:5000
+
+networks:
+  traefik_public:
+    external: true

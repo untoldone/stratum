@@ -82,9 +82,14 @@ production:
   primary: &primary_production
     <<: *default
     database: stratum_production
-    username: stratum
-    password: <%= ENV["STRATUM_DATABASE_PASSWORD"] %>
+    username: postgres
+    host: pg
+    password: notreallyasecret
   queue:
     <<: *primary_production
     database: stratum_production_queue
     migrations_paths: db/queue_migrate
+  cache:
+    <<: *primary_production
+    database: stratum_production_cache
+    migrations_paths: db/cache_migrate
