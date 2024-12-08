@@ -1,5 +1,31 @@
 #!/usr/bin/env sh
 
+#### Load secrets files if present and envs unset
+
+ED25519_PATH="/run/secrets/STRATUM_COLLECTOR_SSH_ED25519_KEY"
+if [ -z "${SSH_ED25519_KEY}" ] && [ -f "$ED25519_PATH" ]; then
+  # Load file content into the environment variable
+  export SSH_ED25519_KEY=$(cat "$ED25519_PATH")
+fi
+
+RSA_KEY_PATH="/run/secrets/STRATUM_COLLECTOR_SSH_RSA_KEY"
+if [ -z "${SSH_RSA_KEY}" ] && [ -f "$RSA_KEY_PATH" ]; then
+  # Load file content into the environment variable
+  export SSH_RSA_KEY=$(cat "$RSA_KEY_PATH")
+fi
+
+AUTH_KEY_PATH="/run/secrets/STRATUM_COLLECTOR_AUTHORIZED_KEY"
+if [ -z "${AUTHORIZED_KEY}" ] && [ -f "$AUTH_KEY_PATH" ]; then
+  # Load file content into the environment variable
+  export AUTHORIZED_KEY=$(cat "$AUTH_KEY_PATH")
+fi
+
+TOKEN_PATH="/run/secrets/STRATUM_COLLECTOR_TOKEN"
+if [ -z "${STRATUM_TOKEN}" ] && [ -f "$TOKEN_PATH" ]; then
+  # Load file content into the environment variable
+  export STRATUM_TOKEN=$(cat "$TOKEN_PATH")
+fi
+
 #### Check required Environment settings
 
 if [[ -z "${STRATUM_BASE_URL}" ]]; then

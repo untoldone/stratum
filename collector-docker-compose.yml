@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  collector:
+    image: swarm-01.office.m:5000/stratum-collector:latest
+    environment:
+      - STRATUM_BASE_URL=https://stratum.gocodo.com
+    secrets:
+      - STRATUM_COLLECTOR_SSH_ED25519_KEY
+      - STRATUM_COLLECTOR_SSH_RSA_KEY
+      - STRATUM_COLLECTOR_AUTHORIZED_KEY
+      - STRATUM_COLLECTOR_TOKEN
+    ports:
+      - 2232:22
+
+secrets:
+  STRATUM_COLLECTOR_SSH_ED25519_KEY:
+    external: true
+  STRATUM_COLLECTOR_SSH_RSA_KEY:
+    external: true
+  STRATUM_COLLECTOR_AUTHORIZED_KEY:
+    external: true
+  STRATUM_COLLECTOR_TOKEN:
+    external: true
