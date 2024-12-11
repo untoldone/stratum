@@ -57,9 +57,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "rmagick"
-gem "mini_magick"
-
 gem "solid_cache", "~> 1.0"
 
 gem "solid_queue", "~> 1.0"

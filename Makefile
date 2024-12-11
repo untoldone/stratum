@@ -12,7 +12,7 @@ build-collector:
 
 build: build-stratum build-collector
 
-push-stratum:
+push-stratum: build-stratum
 	docker push swarm-01.office.m:5000/stratum:$(VERSION)
 	docker push swarm-01.office.m:5000/stratum:latest
 
@@ -20,7 +20,7 @@ push-collector: build-collector
 	docker push swarm-01.office.m:5000/stratum-collector:$(VERSION)
 	docker push swarm-01.office.m:5000/stratum-collector:latest
 
-push: build deploy-registry push-stratum push-collector
+push: deploy-registry push-stratum push-collector
 
 deploy-registry:
 	DOCKER_HOST=ssh://swarm-01.office.m docker stack deploy -c ./registry-docker-compose.yml registry
@@ -28,5 +28,8 @@ deploy-registry:
 deploy-collector: push-collector
 	DOCKER_HOST=ssh://swarm-01.office.m docker stack deploy -c ./collector-docker-compose.yml collector
 
-deploy: build push
+deploy-stratum: push-stratum
+	DOCKER_HOST=ssh://swarm-01.office.m docker stack deploy --resolve-image always -c ./docker-compose.yml stratum
+
+deploy: push
 	DOCKER_HOST=ssh://swarm-01.office.m docker stack deploy --resolve-image always -c ./docker-compose.yml stratum

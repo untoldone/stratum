@@ -1,6 +1,6 @@
 <div id="<%= dom_id document %>">
   <% if document.pages[@page - 1] %>
-  <%= image_tag url_for(document.pages[@page - 1].preview), height: "600" %>
+  <%= image_tag url_for(document.pages.order(:index)[@page - 1].preview), height: "600" %>
   <%= link_to "Prev", document_path(document, page: @page - 1) if @page > 1 %>
   <%= link_to "Next", document_path(document, page: @page + 1) if @page < document.pages.count %>
   <% end %>

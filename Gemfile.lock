@@ -167,7 +167,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    mini_magick (5.0.1)
     mini_mime (1.1.5)
     minitest (5.25.1)
     mission_control-jobs (0.6.0)
@@ -271,9 +270,6 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.3.9)
-    rmagick (6.0.1)
-      observer (~> 0.1)
-      pkg-config (~> 1.4)
     rubocop (1.67.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -380,13 +376,11 @@ DEPENDENCIES
   dotenv
   importmap-rails
   jbuilder
-  mini_magick
   mission_control-jobs
   pg (~> 1.1)
   puma (>= 5.0)
   pundit (~> 2.4)
   rails (~> 7.2.1, >= 7.2.1.2)
-  rmagick
   rubocop-rails-omakase
   ruby-openai
   selenium-webdriver

@@ -1,5 +1,3 @@
-require "RMagick2"
-
 class ProcessDocumentJob < ApplicationJob
   queue_as :default
 
@@ -52,15 +50,15 @@ EOS
         `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages --deskew #{file.path} #{ocrd_pdf_path}`
         document.update!(processed_file: File.open(ocrd_pdf_path))
 
-        pdf = Magick::ImageList.new(ocrd_pdf_path) do |options|
-          options.density = '200'
+        preview_paths = File.join(output_dir, "page-%d.png")
+        preview_paths_glob = File.join(output_dir, "page-*.png")
+        `convert -density 200 #{ocrd_pdf_path} #{preview_paths}`
+        files = Dir.glob(preview_paths_glob)
+        sorted_files = files.sort_by do |file|
+          file.match(/page-(\d+)\.png/)[1].to_i
         end
-        pdf.each_with_index do |page, index|
-          page.format = 'png'
-          page_image_path = File.join(output_dir, "page_#{index + 1}.png")
 
-          page.write(page_image_path)
-
+        sorted_files.each_with_index do |page_image_path, index|
           DocumentPage.create!(preview: File.open(page_image_path), document: document, index: index)
         end
 
@@ -101,7 +99,8 @@ EOS
           `convert -density 300 #{input_image_path} -threshold 75% -compress Group4 #{file_output_path}`
         end
         `convert #{pdf_file_list.join(" ")} #{File.join(output_dir, "output.pdf")}`
-        document.update!(fax_quality_file: File.open(File.join(output_dir, "output.pdf")))
+        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages --deskew #{File.join(output_dir, "output.pdf")} #{File.join(output_dir, "output-ocrd.pdf")}`
+        document.update!(fax_quality_file: File.open(File.join(output_dir, "output-ocrd.pdf")))
       end
     end
   end
