@@ -47,7 +47,7 @@ EOS
         # --deskew attempts to adjust for slight offsets from the document being scanned strait
         # --force-ocr Always redo OCR even when text is present
         ocrd_pdf_path = File.join(output_dir, "#{document.id}.pdf")
-        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages --deskew #{file.path} #{ocrd_pdf_path}`
+        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages #{file.path} #{ocrd_pdf_path}`
         document.update!(processed_file: File.open(ocrd_pdf_path))
 
         preview_paths = File.join(output_dir, "page-%d.png")
@@ -96,10 +96,10 @@ EOS
         Dir.glob(File.join(output_dir, "output*")).each_with_index do |input_image_path, index|
           file_output_path = File.join(images_for_pdf_path, "#{index}.tif")
           pdf_file_list << file_output_path
-          `convert -density 300 #{input_image_path} -threshold 75% -compress Group4 #{file_output_path}`
+          `convert -density 300 #{input_image_path} -threshold 67% -compress Group4 #{file_output_path}`
         end
         `convert #{pdf_file_list.join(" ")} #{File.join(output_dir, "output.pdf")}`
-        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages --deskew #{File.join(output_dir, "output.pdf")} #{File.join(output_dir, "output-ocrd.pdf")}`
+        `ocrmypdf --force-ocr --rotate-pages-threshold 4 --output-type pdf --rotate-pages #{File.join(output_dir, "output.pdf")} #{File.join(output_dir, "output-ocrd.pdf")}`
         document.update!(fax_quality_file: File.open(File.join(output_dir, "output-ocrd.pdf")))
       end
     end
